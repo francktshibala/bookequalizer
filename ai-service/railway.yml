@@ -1,0 +1,14 @@
+version: 2
+
+build:
+  builder: nixpacks
+
+deploy:
+  startCommand: python main.py
+  restartPolicyType: always
+
+environments:
+  production:
+    variables:
+      PORT: 8001
+      ENVIRONMENT: production
