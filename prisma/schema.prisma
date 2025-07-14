@@ -1,0 +1,233 @@
+// BookEqualizer Prisma Schema with Audio Support
+// Auto-synced with PostgreSQL schema for type safety
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String @id @default(uuid()) @db.Uuid
+  clerkUserId  String @unique @map("clerk_user_id")
+  email        String @unique
+  firstName    String? @map("first_name")
+  lastName     String? @map("last_name")
+  
+  // Audio preferences
+  preferredVoice    String  @default("en-US-Standard-A") @map("preferred_voice")
+  playbackSpeed     Decimal @default(1.00) @db.Decimal(3, 2) @map("playback_speed")
+  preferredLanguage String  @default("en-US") @map("preferred_language")
+  volumeLevel       Decimal @default(1.00) @db.Decimal(3, 2) @map("volume_level")
+  
+  // Timestamps
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz
+  
+  // Relations
+  readingSessions   ReadingSession[]
+  audioPreferences  AudioPreference[]
+  
+  @@map("users")
+}
+
+model Book {
+  id      String @id @default(uuid()) @db.Uuid
+  title   String
+  author  String
+  isbn    String?
+  
+  // File metadata
+  epubFilePath String @map("epub_file_path")
+  epubFileSize BigInt @map("epub_file_size")
+  totalPages   Int?   @map("total_pages")
+  wordCount    Int?   @map("word_count")
+  
+  // Audio metadata
+  hasAudio                 Boolean              @default(false) @map("has_audio")
+  audioGenerationStatus    AudioGenerationStatus @default(PENDING) @map("audio_generation_status")
+  totalAudioDurationSeconds Int?                @map("total_audio_duration_seconds")
+  audioCostUsd             Decimal             @default(0.00) @db.Decimal(10, 4) @map("audio_cost_usd")
+  
+  // Processing metadata
+  processingCompletedAt DateTime? @map("processing_completed_at") @db.Timestamptz
+  
+  // Timestamps
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz
+  
+  // Relations
+  chapters        Chapter[]
+  audioFiles      AudioFile[]
+  readingSessions ReadingSession[]
+  
+  @@map("books")
+}
+
+model Chapter {
+  id            String @id @default(uuid()) @db.Uuid
+  bookId        String @map("book_id") @db.Uuid
+  chapterNumber Int    @map("chapter_number")
+  title         String?
+  
+  // Text content
+  content        String
+  wordCount      Int    @map("word_count")
+  characterCount Int    @map("character_count")
+  
+  // Audio mapping
+  audioFileId      String?  @map("audio_file_id") @db.Uuid
+  startTimeSeconds Decimal? @map("start_time_seconds") @db.Decimal(8, 3)
+  endTimeSeconds   Decimal? @map("end_time_seconds") @db.Decimal(8, 3)
+  
+  // Vector embeddings for AI search
+  contentEmbedding String? @map("content_embedding") // Stored as vector string
+  
+  // Timestamps
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz
+  
+  // Relations
+  book      Book       @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  audioFile AudioFile? @relation(fields: [audioFileId], references: [id])
+  readingSessions ReadingSession[]
+  
+  @@unique([bookId, chapterNumber])
+  @@map("chapters")
+}
+
+model AudioFile {
+  id        String @id @default(uuid()) @db.Uuid
+  bookId    String @map("book_id") @db.Uuid
+  chapterId String? @map("chapter_id") @db.Uuid
+  
+  // File information
+  filePath      String  @map("file_path")
+  fileSizeBytes BigInt  @map("file_size_bytes")
+  durationSeconds Decimal @map("duration_seconds") @db.Decimal(8, 3)
+  
+  // TTS metadata
+  voiceUsed        String      @map("voice_used")
+  languageCode     String      @map("language_code")
+  ttsProvider      TtsProvider @map("tts_provider")
+  generationCostUsd Decimal    @default(0.00) @db.Decimal(8, 4) @map("generation_cost_usd")
+  
+  // Audio quality
+  sampleRate Int    @default(22050) @map("sample_rate")
+  bitRate    Int    @default(64000) @map("bit_rate")
+  format     String @default("mp3")
+  
+  // CDN and caching
+  cdnUrl         String?   @map("cdn_url")
+  cacheExpiresAt DateTime? @map("cache_expires_at") @db.Timestamptz
+  
+  // Timestamps
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz
+  
+  // Relations
+  book     Book      @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  chapters Chapter[]
+  
+  @@map("audio_files")
+}
+
+model ReadingSession {
+  id     String @id @default(uuid()) @db.Uuid
+  userId String @map("user_id") @db.Uuid
+  bookId String @map("book_id") @db.Uuid
+  
+  // Position tracking
+  currentChapterId    String?     @map("current_chapter_id") @db.Uuid
+  textPositionPercent Decimal     @default(0.000) @db.Decimal(5, 3) @map("text_position_percent")
+  audioPositionSeconds Decimal    @default(0.000) @db.Decimal(8, 3) @map("audio_position_seconds")
+  
+  // Session metadata
+  readingMode ReadingMode @default(TEXT) @map("reading_mode")
+  isActive    Boolean     @default(true) @map("is_active")
+  
+  // Reading statistics
+  totalReadingTimeMinutes Int @default(0) @map("total_reading_time_minutes")
+  totalAudioTimeMinutes   Int @default(0) @map("total_audio_time_minutes")
+  pagesRead              Int @default(0) @map("pages_read")
+  
+  // Timestamps
+  lastAccessedAt DateTime @default(now()) @map("last_accessed_at") @db.Timestamptz
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt      DateTime @updatedAt @map("updated_at") @db.Timestamptz
+  
+  // Relations
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  book           Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  currentChapter Chapter? @relation(fields: [currentChapterId], references: [id])
+  
+  @@unique([userId, bookId])
+  @@map("reading_sessions")
+}
+
+model AudioPreference {
+  id     String @id @default(uuid()) @db.Uuid
+  userId String @map("user_id") @db.Uuid
+  
+  // Voice customization
+  voiceId      String  @map("voice_id")
+  voiceName    String  @map("voice_name")
+  languageCode String  @map("language_code")
+  gender       Gender? 
+  accent       String?
+  
+  // Playback settings
+  defaultSpeed     Decimal @default(1.00) @db.Decimal(3, 2) @map("default_speed")
+  pitchAdjustment  Decimal @default(1.00) @db.Decimal(3, 2) @map("pitch_adjustment")
+  volumeAdjustment Decimal @default(1.00) @db.Decimal(3, 2) @map("volume_adjustment")
+  
+  // Usage tracking
+  usageCount Int     @default(0) @map("usage_count")
+  isFavorite Boolean @default(false) @map("is_favorite")
+  
+  // Timestamps
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz
+  
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("audio_preferences")
+}
+
+// Enums
+enum AudioGenerationStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+  
+  @@map("audio_generation_status")
+}
+
+enum TtsProvider {
+  GOOGLE
+  AZURE
+  AMAZON
+  
+  @@map("tts_provider")
+}
+
+enum ReadingMode {
+  TEXT
+  AUDIO
+  HYBRID
+  
+  @@map("reading_mode")
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  NEUTRAL
+  
+  @@map("gender")
+}
