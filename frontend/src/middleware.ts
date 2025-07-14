@@ -1,6 +1,6 @@
-import { clerkMiddleware } from '@clerk/nextjs'
+import { authMiddleware } from '@clerk/nextjs'
 
-export default clerkMiddleware({
+export default authMiddleware({
   publicRoutes: ['/'],
   ignoredRoutes: [
     '/api/health',
