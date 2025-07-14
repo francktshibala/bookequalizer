@@ -10,11 +10,21 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 from urllib.parse import urlparse
 
 class HealthHandler(BaseHTTPRequestHandler):
+    def _set_cors_headers(self):
+        self.send_header('Access-Control-Allow-Origin', '*')
+        self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+        self.send_header('Access-Control-Allow-Headers', 'Content-Type')
+    
+    def do_OPTIONS(self):
+        self.send_response(200)
+        self._set_cors_headers()
+        self.end_headers()
+    
     def do_GET(self):
         if self.path == '/health':
             self.send_response(200)
             self.send_header('Content-type', 'application/json')
-            self.send_header('Access-Control-Allow-Origin', '*')
+            self._set_cors_headers()
             self.end_headers()
             
             response = {
@@ -27,7 +37,7 @@ class HealthHandler(BaseHTTPRequestHandler):
         elif self.path == '/':
             self.send_response(200)
             self.send_header('Content-type', 'application/json')
-            self.send_header('Access-Control-Allow-Origin', '*')
+            self._set_cors_headers()
             self.end_headers()
             
             response = {
@@ -39,25 +49,48 @@ class HealthHandler(BaseHTTPRequestHandler):
         else:
             self.send_response(404)
             self.send_header('Content-type', 'application/json')
+            self._set_cors_headers()
             self.end_headers()
             self.wfile.write(json.dumps({"error": "Not found"}).encode())
 
     def do_POST(self):
         if self.path == '/process-epub':
+            # Read the content length
+            content_length = int(self.headers.get('Content-Length', 0))
+            if content_length > 0:
+                # Read and discard the body for now
+                self.rfile.read(content_length)
+            
             self.send_response(200)
             self.send_header('Content-type', 'application/json')
-            self.send_header('Access-Control-Allow-Origin', '*')
+            self._set_cors_headers()
             self.end_headers()
             
             response = {
                 "success": True,
-                "message": "EPUB processing endpoint ready",
-                "note": "Minimal version - full processing available after deployment"
+                "book_id": "demo_book_123",
+                "title": "Demo Book",
+                "author": "Demo Author", 
+                "chapters": [
+                    {
+                        "id": "chapter_1",
+                        "title": "Chapter 1",
+                        "index": 0,
+                        "content": "This is demo content from the minimal AI service",
+                        "segments": [],
+                        "word_count": 100,
+                        "character_count": 500
+                    }
+                ],
+                "total_segments": 1,
+                "processing_time": 0.1,
+                "note": "Minimal version - demo response"
             }
             self.wfile.write(json.dumps(response).encode())
         else:
             self.send_response(404)
             self.send_header('Content-type', 'application/json')
+            self._set_cors_headers()
             self.end_headers()
             self.wfile.write(json.dumps({"error": "Not found"}).encode())
 
