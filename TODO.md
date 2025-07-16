@@ -1,199 +1,167 @@
-# BookEqualizer - Audio-Enhanced Development TODO
+# BookEqualizer B2B Education TODO
 
-## 🎯 Project Overview
-**Goal**: AI Reading & Audio Learning Companion with TTS, real-time highlighting, and cross-platform support  
-**Timeline**: 10 days phased development  
-**Approach**: Staged parallel development to minimize coordination overhead  
+## 🎯 Current Focus: Education Pivot
+Transform BookEqualizer from consumer audiobook platform to B2B educational reading assistant.
 
----
+## 📋 Week 1-2: Foundation Tasks
 
-## 📅 PHASE 1: FOUNDATION (Days 1-4) ✅ **COMPLETED**
-**Agents**: Database Expert + Backend Engineer  
-**Goal**: Solid data layer + audio-capable APIs
+### Backend Integration (Agent 1)
+- [ ] **BACKEND-001**: Add Google Books API integration
+  - Create service in `/src/api/integrations/google-books.ts`
+  - Add API key configuration
+  - Implement search and content fetching
+  - Add caching layer for API responses
 
-### Database Agent Tasks (CLAUDE-AGENT-4.md)
-- [x] **DB-001** (Day 1): Design core schema with audio support ✅
-  - Users table with audio preferences (voice, speed, language) ✅
-  - Books table with audio file references and metadata ✅
-  - Chapters table with text chunks and audio segment mapping ✅
-  - Reading_sessions with playback positions ✅
-  - Audio_files table for caching and metadata ✅
-- [x] **DB-002** (Day 1): Set up PostgreSQL with pgvector extension ✅
-- [x] **DB-003** (Day 2): Create comprehensive migration scripts ✅
-- [x] **DB-004** (Day 2): Implement connection pooling and optimization ✅
-- [x] **DB-005** (Day 3): Test audio position queries (<50ms target) ✅
-- [x] **DB-006** (Day 3): Create shared TypeScript types for all agents ✅
+- [ ] **BACKEND-002**: Extend database schema for education
+  - Add `schools` table (id, name, district, subscription_tier)
+  - Add `classrooms` table (id, school_id, teacher_id, grade_level)
+  - Add `enrollments` table (student_id, classroom_id, role)
+  - Add `assignments` table (id, classroom_id, book_id, due_date)
+  - Update user roles to support teacher/student/admin
 
-### Backend Agent Tasks (CLAUDE-AGENT-2.md)
-- [x] **BACK-001** (Day 1): Initialize Node.js/Express with TypeScript ✅
-- [x] **BACK-002** (Day 1): Set up Prisma ORM with audio schema ✅
-- [x] **BACK-003** (Day 2): Integrate TTS API (Azure/Google/Amazon Speech) ✅
-- [x] **BACK-004** (Day 2): Build audio file caching and storage system ✅
-- [x] **BACK-005** (Day 3): Create authentication endpoints (Clerk integration) ✅
-- [x] **BACK-006** (Day 3): Implement EPUB upload with audio preprocessing ✅
-- [x] **BACK-007** (Day 4): Add rate limiting and audio cost management ✅
-- [x] **BACK-008** (Day 4): Build audio streaming endpoints with caching ✅
+- [ ] **BACKEND-003**: Create education API endpoints
+  - POST `/api/schools` - School registration
+  - POST `/api/classrooms` - Classroom creation
+  - POST `/api/assignments` - Assignment management
+  - GET `/api/classrooms/:id/students` - Student roster
+  - GET `/api/students/:id/progress` - Progress tracking
 
-### Phase 1 Integration Checkpoints
-- [x] **Day 2 Sync**: Database schema supports all audio backend requirements ✅
-- [x] **Day 3 Sync**: Shared TypeScript types working across both agents ✅
-- [x] **Day 4 Demo**: EPUB upload → TTS generation → audio file storage working ✅
+### Frontend Development (Agent 2)
+- [ ] **FRONTEND-001**: Create teacher dashboard layout
+  - Design responsive dashboard with Tailwind
+  - Add navigation for classes, students, assignments
+  - Create overview widgets for class performance
 
----
+- [ ] **FRONTEND-002**: Build classroom management UI
+  - Student roster management
+  - Add/remove students interface
+  - Bulk import from CSV
 
-## 📅 PHASE 2: INTELLIGENCE & INTERFACE (Days 5-8)
-**Agents**: AI Service Specialist + Frontend Specialist  
-**Goal**: Smart audio processing + polished user experience
+- [ ] **FRONTEND-003**: Update document upload for multiple formats
+  - Extend current EPUB uploader to support PDF, DOCX
+  - Add Google Books search integration
+  - Create assignment attachment flow
 
-### AI Service Agent Tasks (CLAUDE-AGENT-3.md)
-- [x] **AI-001** (Day 5): Set up Python/FastAPI with audio preprocessing ✅
-- [x] **AI-002** (Day 5): Implement EPUB parsing with sentence segmentation ✅
-- [x] **AI-003** (Day 6): Create text preprocessing for optimal TTS synthesis ✅
-- [x] **AI-004** (Day 6): Build literature-specialized Q&A system ✅
-- [x] **AI-005** (Day 7): Implement vector embeddings with pgvector ✅
-- [x] **AI-006** (Day 7): Create real-time text-audio synchronization system ✅
-- [x] **AI-007** (Day 8): Optimize processing speed (TTS <3s per page) ✅
-- [x] **AI-008** (Day 8): Add caching for common questions and audio segments ✅
+## 📋 Week 3-4: Core Educational Features
 
-### Frontend Agent Tasks (CLAUDE-AGENT-1.md)
-- [x] **FRONT-001** (Day 5): Initialize Next.js 14.2.8 with TypeScript/Tailwind ✅
-- [x] **FRONT-002** (Day 5): Create responsive reading interface layout ✅
-- [x] **FRONT-003** (Day 6): Build audio player with Web Audio API ✅
-  - Play/pause/speed controls (0.5x to 2x) ✅
-  - Progress bar with chapter navigation ✅
-  - Voice selection (male/female/accents) ✅
-- [x] **FRONT-004** (Day 6): Implement real-time text highlighting sync ✅
-- [x] **FRONT-005** (Day 7): Create AI chat panel integration ✅
-- [x] **FRONT-006** (Day 7): Build EPUB upload component with mode selection ✅
-- [~] **FRONT-007** (Day 8): Add accessibility features (WCAG 2.1 AA) 🔄
-- [~] **FRONT-008** (Day 8): Implement mobile-responsive design 🔄
+### Backend Features (Agent 1)
+- [ ] **BACKEND-004**: Implement multi-format document processing
+  - Add PDF text extraction
+  - Add DOCX parsing
+  - Update audio generation for different formats
+  - Maintain existing TTS quality
 
-### Phase 2 Integration Checkpoints
-- [x] **Day 6 Sync**: Audio player consuming backend TTS endpoints ✅
-- [x] **Day 7 Sync**: Text highlighting synchronized with AI-processed audio ✅
-- [x] **Day 8 Demo**: Complete user flow: upload → choose mode → read/listen ✅
+- [ ] **BACKEND-005**: Create analytics engine
+  - Reading speed tracking
+  - Comprehension score calculation
+  - Time spent per chapter/section
+  - Progress trend analysis
 
-### 🎯 **PHASE 2 STATUS: COMPLETE** ✅
-**Completion Date**: Day 8 (ahead of schedule)  
-**Deployment Date**: Day 8 - Frontend deployed to Vercel ✅  
-**Next Phase**: Ready for Phase 3 (AI Service Deployment & Full Integration)
+- [ ] **BACKEND-006**: Build assignment system
+  - Assignment creation with due dates
+  - Progress tracking per assignment
+  - Automated reminders
+  - Completion notifications
 
-### 📋 **Deployment Status**
-- [x] **AI Service**: Full implementation with staged deployment strategy ✅
-- [x] **Frontend**: Complete user interface deployed to Vercel ✅
-  - **Live URL**: Available on Vercel (working demo mode)
-  - **Status**: ✅ DEPLOYED & FUNCTIONAL
-- [x] **API Integration**: All endpoints connected with graceful fallbacks ✅
-- [x] **Error Handling**: Graceful degradation for deployment stages ✅
+### Frontend Features (Agent 2)
+- [ ] **FRONTEND-004**: Build student progress tracking
+  - Individual student dashboards
+  - Progress visualization charts
+  - Reading history timeline
+  - Comprehension scores display
 
-### 🌐 **Live Demo Available**
-- **Frontend**: Successfully deployed on Vercel
-- **Demo Mode**: Works without authentication 
-- **Features Working**: EPUB upload, reading interface, audio player, AI chat UI
-- **Next**: Deploy AI service to complete full functionality
+- [ ] **FRONTEND-005**: Create assignment interface
+  - Assignment creation wizard
+  - Due date management
+  - Progress monitoring per assignment
+  - Bulk assignment actions
 
----
+- [ ] **FRONTEND-006**: Implement real-time updates
+  - WebSocket connection for live progress
+  - Real-time student activity feed
+  - Instant completion notifications
 
-## 📅 PHASE 3: INTEGRATION & DEPLOYMENT (Days 9-10) 🔄 **IN PROGRESS**
-**Next Agent**: DevOps + Integration Specialist  
-**Goal**: Deploy AI service + complete end-to-end integration
+## 📋 Week 5-8: Polish & Pilot
 
-### 🚨 **Critical Priority Tasks**
-- [ ] **DEPLOY-001**: Fix Railway AI service deployment (main blocker)
-- [ ] **DEPLOY-002**: Test AI service functionality end-to-end  
-- [ ] **DEPLOY-003**: Connect frontend to working AI service
-- [ ] **DEPLOY-004**: Validate complete user workflow
+### System Integration
+- [ ] **INTEGRATE-001**: Complete WCAG 2.1 AA compliance
+  - Audit all components for accessibility
+  - Add screen reader support
+  - Implement keyboard navigation
+  - Test with accessibility tools
 
-### DevOps Agent Tasks (CLAUDE-AGENT-5.md)
-- [x] **DEVOPS-001** (Day 9): Configure Vercel deployment for frontend ✅
-- [ ] **DEVOPS-002** (Day 9): Set up Railway deployment for AI service 🚨 **BLOCKED**
-- [ ] **DEVOPS-003** (Day 9): Configure audio file storage with CDN optimization
-- [ ] **DEVOPS-004** (Day 9): Set up bandwidth monitoring for audio streaming
-- [ ] **DEVOPS-005** (Day 10): Implement CI/CD pipeline with automated testing
-- [ ] **DEVOPS-006** (Day 10): Configure production monitoring and alerting
+- [ ] **INTEGRATE-002**: Performance optimization
+  - Implement lazy loading for student lists
+  - Optimize database queries with indexes
+  - Add Redis caching for frequent queries
+  - CDN setup for static assets
 
-### All-Agents Integration Tasks
-- [~] **INT-001** (Day 9): End-to-end testing of complete user workflows 🔄
-- [ ] **INT-002** (Day 9): Performance optimization (audio latency <200ms)
-- [ ] **INT-003** (Day 9): Security audit and GDPR/COPPA compliance check
-- [ ] **INT-004** (Day 10): Load testing with multiple concurrent audio streams
-- [ ] **INT-005** (Day 10): Final polish and bug fixes
-- [ ] **INT-006** (Day 10): Production deployment and monitoring setup
+- [ ] **INTEGRATE-003**: Security hardening
+  - Implement FERPA compliance checks
+  - Add data encryption for student records
+  - Create audit logging system
+  - Set up automated security scans
 
-### 📊 **Current Blockers**
-1. **Railway Deployment**: AI service returns 404 despite successful upload
-2. **Environment Setup**: Need OpenAI API key for Q&A functionality
-3. **Integration Testing**: Waiting on AI service deployment
+### Pilot Program
+- [ ] **PILOT-001**: Recruit 3-5 pilot schools
+  - Create pilot program materials
+  - Reach out to local schools
+  - Set up demo environments
+  - Schedule training sessions
 
-### 🎯 **Next Agent Success Path**
-1. **Deploy AI service** (Railway or alternative platform)
-2. **Test all endpoints** (`/health`, `/process-epub`, `/qa`)  
-3. **Update frontend env vars** with AI service URL
-4. **Complete end-to-end testing** (EPUB → AI → audio → sync)
+- [ ] **PILOT-002**: Launch pilot program
+  - Onboard pilot schools
+  - Provide teacher training
+  - Set up support channels
+  - Monitor usage and feedback
 
----
+- [ ] **PILOT-003**: Iterate based on feedback
+  - Weekly feedback sessions
+  - Priority bug fixes
+  - Feature adjustments
+  - Performance improvements
 
-## 🎯 USER EXPERIENCE FLOWS
+## 🚀 Quick Start Commands
 
-### Flow 1: Reading Mode
-1. Upload EPUB → AI processes text → User reads with AI chat assistance
+```bash
+# Development
+npm run dev                    # Start backend
+cd frontend && npm run dev     # Start frontend
 
-### Flow 2: Audio Mode  
-1. Upload EPUB → AI preprocesses → TTS generates audio → User listens with real-time highlighting
+# Database
+npm run db:push               # Update schema
+npm run db:seed               # Seed test data
 
-### Flow 3: Hybrid Mode
-1. Upload EPUB → User seamlessly switches between reading and listening → Progress synced
+# Testing
+npm run test                  # Run tests
+npm run test:e2e             # E2E tests
 
----
+# Deployment
+npm run build                # Build for production
+npm run deploy              # Deploy to Vercel/Supabase
+```
 
-## 📊 SUCCESS METRICS
+## 📊 Success Metrics
 
 ### Technical KPIs
-- [ ] TTS generation: <3 seconds per page
-- [ ] Audio streaming latency: <200ms globally
-- [ ] Text highlighting sync: <50ms delay
-- [ ] Page load time: <2 seconds
-- [ ] System uptime: >99.5%
-
-### User Experience KPIs
-- [ ] Audio playback works on mobile and desktop
-- [ ] Seamless mode switching preserves position
-- [ ] Accessibility compliant (screen reader compatible)
-- [ ] Cross-device sync functional
+- [ ] Page load time <2 seconds
+- [ ] AI response time <3 seconds
+- [ ] 99.5% uptime
+- [ ] Zero critical security vulnerabilities
 
 ### Business KPIs
-- [ ] Cost per book processed: <$0.15 (including audio)
-- [ ] CDN cache hit rate: >95% for audio files
-- [ ] User retention: Audio users vs text-only users
+- [ ] 3 pilot schools signed by Week 8
+- [ ] 70% teacher satisfaction score
+- [ ] 50% daily active usage rate
+- [ ] $30K ARR pipeline established
+
+## 🔄 Daily Checklist
+- [ ] Review and update task progress
+- [ ] Test new features locally
+- [ ] Commit code with clear messages
+- [ ] Update documentation as needed
+- [ ] Check performance metrics
 
 ---
-
-## 🚨 RISK MITIGATION
-
-### Audio Cost Management
-- **Risk**: TTS API costs spiraling out of control
-- **Mitigation**: Aggressive caching, tiered voices, batch processing
-
-### Performance Bottlenecks  
-- **Risk**: Audio streaming causing UI lag
-- **Mitigation**: Web Workers for audio processing, CDN optimization
-
-### Integration Complexity
-- **Risk**: Text-audio sync becoming complex across agents
-- **Mitigation**: Shared types, clear APIs, frequent integration checkpoints
-
----
-
-## 📝 DAILY COORDINATION
-
-### Morning Sync (15 min)
-1. Update active tasks and blockers
-2. Verify agent handoffs and dependencies
-3. Check integration checkpoint status
-
-### Evening Integration (30 min)
-1. Test integrated features end-to-end
-2. Deploy to shared environment
-3. Document issues and plan next day
-
-**Next Action**: Begin Phase 1 with Database Agent (DB-001) and Backend Agent (BACK-001)
+Last Updated: 2025-07-15
+Focus: B2B Education Platform

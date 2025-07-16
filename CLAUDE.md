@@ -1,157 +1,142 @@
-# BookEqualizer - AI Reading & Audio Learning Companion
+# BookEqualizer - B2B Educational Reading Platform
 
-## 🎯 Project Status
-**Current Phase**: PHASE 2 - INTELLIGENCE & INTERFACE (Days 5-8)  
-**Phase 1**: ✅ COMPLETED - Audio-enhanced backend foundation operational  
-**Next Goal**: AI Service + Frontend with real-time text-audio synchronization  
+## 🎯 Project Focus
+**Target Market**: B2B Education (Schools, Districts, Educational Institutions)  
+**Core Value**: Teacher-first classroom management with AI-powered reading assistance and real-time text-audio synchronization  
+**Revenue Goal**: $100K ARR through school/district licensing  
+**Primary Pain Point**: Reading intervention programs cost schools $10K-100K/year with insufficient teacher training support
 
-## 🏗️ Architecture Completed
-**Backend Foundation** ✅:
-- Audio-enhanced PostgreSQL (6 tables + pgvector)
-- Express/TypeScript with TTS APIs (Google/Azure/Amazon)
-- Prisma ORM with full type safety
-- EPUB processing with audio preprocessing
-- Multi-layer audio caching system
-- Clerk authentication with progress sync
-- Rate limiting and cost management
+## 🏗️ Architecture Overview
+**Ultra-Simplified Stack**:
+- Monolithic Next.js 14.2.8 with API routes (no separate Express backend)
+- Single PostgreSQL database with Supabase
+- One Python AI service for text processing
+- Clerk authentication with classroom organization
+- Deployment: Vercel + Supabase only
 
-## 📅 PHASE 2 Tasks (AI Service + Frontend)
-**Goal**: Smart audio processing + polished user experience
+## 📚 Key Features (Teacher-First Design)
+**For Teachers (Primary Users)**:
+- **Classroom Overview Dashboard** - 20-30 students at-a-glance with reading levels and alerts
+- **Bulk Assignment System** - Assign content to student groups efficiently  
+- **Intervention Alerts** - Immediately highlight struggling readers
+- **Progress Analytics** - Visual dashboards showing reading improvement trends
+- **Parent Communication** - Auto-generated progress reports
+- **Google Books Integration** - Access to 10M+ educational titles
 
-### AI Service Tasks (Days 5-6)
-- [ ] **AI-001**: Set up Python/FastAPI with audio preprocessing
-- [ ] **AI-002**: Implement EPUB parsing with sentence segmentation  
-- [ ] **AI-003**: Create text preprocessing for optimal TTS synthesis
-- [ ] **AI-004**: Build literature-specialized Q&A system
-- [ ] **AI-005**: Implement vector embeddings with pgvector
-- [ ] **AI-006**: Create real-time text-audio synchronization system
+**For Students (Simplified Interface)**:
+- Large "Start Reading" button with minimal navigation
+- Real-time text-audio synchronization (<50ms delay)
+- AI-powered Q&A for comprehension ("Ask Teacher" backup)
+- Always-visible progress tracking
+- WCAG 2.1 AA accessibility features
 
-### Frontend Tasks (Days 7-8)  
-- [ ] **FRONT-001**: Initialize Next.js 14.2.8 with TypeScript/Tailwind
-- [ ] **FRONT-002**: Create responsive reading interface layout
-- [ ] **FRONT-003**: Build audio player with Web Audio API
-- [ ] **FRONT-004**: Implement real-time text highlighting sync
-- [ ] **FRONT-005**: Create AI chat panel integration
-- [ ] **FRONT-006**: Build EPUB upload component with mode selection
-- [ ] **FRONT-007**: Add accessibility features (WCAG 2.1 AA)
-- [ ] **FRONT-008**: Implement mobile-responsive design
+**For Administrators**:
+- School/district usage analytics
+- FERPA/COPPA compliance documentation
+- License management and ROI reporting
 
-## 🚀 Backend APIs Ready
-**Available Endpoints**:
-- `POST /api/upload/epub` - EPUB upload & processing
-- `POST /api/tts/books/:id/audio/generate` - TTS generation
-- `GET /api/audio/stream/:audioFileId` - Audio streaming
-- `GET /api/auth/me` - User profile & preferences
-- `PUT /api/progress/:bookId/progress` - Reading position sync
+## 🎯 Implementation Plan (4 Weeks - Teacher-First MVP)
 
-## 🎯 Phase 2 Success Criteria
-- [ ] Real-time text highlighting during audio playbook
-- [ ] AI-powered Q&A about book content
-- [ ] Seamless mode switching (text ↔ audio ↔ hybrid)
-- [ ] Cross-device progress synchronization
-- [ ] Mobile-responsive interface
+### Week 1: Teacher Dashboard Foundation
+- [ ] Teacher authentication with Clerk (classroom organization)
+- [ ] Classroom overview dashboard (student list, reading levels)
+- [ ] Basic database schema for schools/classrooms/students
+- [ ] Google Books API integration for content library
 
-## 🔧 Development Setup
-**Backend**: `npm run dev` (works without database for API testing)  
-**Database**: `./scripts/setup-db.sh` + `npm run db:push` (requires Docker)  
-**Test**: `npm run build` + `node test-quick.js` (validates structure)  
+### Week 2: Assignment & Content Management  
+- [ ] Bulk assignment system (assign books to student groups)
+- [ ] Content upload (PDF support + Google Books)
+- [ ] Student invitation/enrollment system
+- [ ] Teacher content library management
+
+### Week 3: Student Reading Experience
+- [ ] Simplified student interface (large "Start Reading" button)
+- [ ] Real-time text-audio synchronization
+- [ ] AI-powered Q&A system
+- [ ] Basic progress tracking (time spent, pages read)
+
+### Week 4: Analytics & Pilot Preparation
+- [ ] Teacher progress analytics dashboard
+- [ ] Intervention alerts for struggling readers
+- [ ] FERPA compliance documentation
+- [ ] Deploy pilot version for 3 teacher validation calls
+
+## 🔧 Development Commands  
+**Monolithic App**: `npm run dev` (Next.js with API routes)
+**Database**: `npm run db:push`  
+**Type Check**: `npm run typecheck`  
+**Lint**: `npm run lint`  
 
 ## 💻 Development Standards
-**Performance Targets**:
-- API response time: <200ms
-- AI response time: <3 seconds (target: <2 seconds)
-- Page load time: <2 seconds
-- System uptime: >99.5%
-
-**Quality Gates**:
-- Zero TypeScript errors tolerance
-- All endpoints validated with Zod schemas
-- WCAG 2.1 AA accessibility compliance
-- Rate limiting prevents abuse
+**Code Quality**:
+- TypeScript strict mode
 - Comprehensive error handling
+- Input validation with Zod
+- WCAG 2.1 AA compliance
 
-**Security Requirements**:
-- EPUB file validation and sandboxing
-- GDPR/COPPA compliance for education
-- Input validation on all endpoints
-- Secure file storage and access
-- Rate limiting for AI cost management
+**Performance Targets**:
+- Page load: <2 seconds
+- AI response: <3 seconds
+- Audio sync delay: <50ms
 
-**Testing Infrastructure**:
-- Unit tests for core functionality
-- Integration tests for API endpoints
-- E2E tests for audio synchronization
-- Accessibility testing with screen readers
-- Performance monitoring and alerts
+**Security**:
+- FERPA/COPPA compliance
+- Role-based access control
+- Secure document storage
+- Input sanitization
 
-## 🛠️ Tech Stack Constraints
-**Frontend**: Next.js 14.2.8, TypeScript 5.3.3, Tailwind CSS 3.4.6
-**Backend**: Node.js 18+, Express.js, PostgreSQL 15+, Prisma ORM
-**AI Service**: Python 3.9+, FastAPI, LangChain, pgvector
-**Authentication**: Clerk with session management
-**Deployment**: Vercel (frontend), Railway (backend/AI)
+## 🚀 B2B Sales Strategy (Research-Driven)
+**Key Decision Makers**:
+1. **Superintendent** (final authority for $15K+ purchases)
+2. **Curriculum Director** (educational alignment & standards compliance)  
+3. **Technology Director** (technical feasibility & security)
 
-## 🚨 Emergency Procedures
-**If Blocked**:
-1. Document issue and switch to mock data approach
-2. Test endpoints with Postman/curl first
-3. Never spend >30min debugging same issue
-4. Check database connectivity and environment variables
-5. Monitor costs and performance continuously
+**Pricing Model**:
+- School License: $10K-15K/year (requires superintendent approval)
+- District License: $50K-100K/year 
+- Pilot Program: 3-month free with full support
 
-## 📋 Commands to Remember
-**Lint & Type Check**: `npm run lint && npm run typecheck`
-**Database Reset**: `npm run db:reset && npm run db:push`
-**Build Verification**: `npm run build`
-**Cost Monitoring**: Check OpenAI/Claude API usage daily
+**Target Pain Points**:
+- Reading intervention costs ($10K-100K/year per school)
+- Teacher training requirements (80+ hours for new tools)
+- 40% of 4th graders can't read at basic level
+- State compliance mandates (CA screening by June 2025)
 
-## 🎭 Multi-Agent Development Approach
-**Strategy**: Phased parallel development with specialized agents  
-- **Phase 1**: Database + Backend (foundation)  
-- **Phase 2**: AI Service + Frontend (features)  
-- **Phase 3**: DevOps + Integration (production)  
+## 📋 Success Metrics
+**Week 4 MVP Goals**:
+- 3 teacher validation calls completed
+- Teacher dashboard functional
+- Student reading experience working
+- FERPA compliance documentation ready
 
-**Agent Context Files**:
-- Database Expert: `.ai-context/CLAUDE-AGENT-4.md`
-- Backend Engineer: `.ai-context/CLAUDE-AGENT-2.md`  
-- AI Service: `.ai-context/CLAUDE-AGENT-3.md`
-- Frontend: `.ai-context/CLAUDE-AGENT-1.md`
-- DevOps: `.ai-context/CLAUDE-AGENT-5.md`
+**30-Day Post-MVP**:
+- 3 pilot schools contracted ($30K ARR)
+- 50 active teacher accounts
+- 500 students using weekly
+- 80% teacher satisfaction (reduces prep time)
 
-## 🔄 Daily Workflow & Coordination
-**Morning**: Check `TODO.md` → Load agent context → Begin phase tasks  
-**Working**: Update task status (pending → in_progress → completed)  
-**Evening**: Update progress → Commit changes → Plan next day  
-**Agent Switch**: Load different `CLAUDE-AGENT-*.md` as context  
+## 🚨 Ultra-Simplified Approach
+**What We're NOT Doing**:
+- Multi-agent development (ONE agent only)
+- Separate Express backend (Next.js API routes only)
+- Consumer B2C features  
+- Complex deployment (Vercel + Supabase only)
+- Fancy animations or design
 
-## ⚡ Performance & Success Metrics
-**Audio-Specific KPIs**:
-- TTS generation: <3 seconds per page
-- Audio streaming latency: <200ms globally  
-- Text highlighting sync: <50ms delay
-- CDN cache hit rate: >95% for audio files
-- Cost per book: <$0.15 (including audio)
+**What We ARE Doing**:
+- Teacher-first B2B education platform
+- Monolithic Next.js architecture until $100K ARR
+- Ship MVP in 4 weeks, not 8
+- Validate with teachers before building more features
+- Educational UI/UX patterns (clean, professional, boring)
 
-**MVP Success Criteria**:
-- Users can upload EPUB → choose reading/audio mode → AI assistance works
-- Real-time text highlighting during audio playback functional
-- Cross-device sync preserves reading/listening position  
-- Educational accessibility standards met (WCAG 2.1 AA)
-
-## 🚨 Risk Mitigation & Cost Management
-**AI Cost Controls**:
-- Aggressive response caching (60% cost reduction)
-- Tiered models (GPT-3.5 for simple, GPT-4 for complex)
-- Real-time cost monitoring with alerts
-- Batch processing for efficiency
-
-**Key Decisions Made**:
-1. **Phased Development**: Avoid multi-agent chaos
-2. **Google TTS**: Best cost/quality balance for startup
-3. **Aggressive Caching**: 60% cost reduction strategy
-4. **PostgreSQL**: Single database for simplicity
-5. **Audio-First Design**: Core feature, not afterthought
+## 🎨 UI/UX Design System
+**Colors**: Navy blue (#1e40af) + Forest green (#059669)
+**Typography**: Large, sans-serif fonts for accessibility
+**Layout**: Grid-based, mobile-first (teachers use iPads)
+**Interactions**: Large touch targets, minimal animations
+**Priority**: Teacher workflow efficiency over visual appeal
 
 ---
-**Phase 1 Commit**: 9d2374d - Complete audio-enhanced backend foundation  
 **Repository**: https://github.com/francktshibala/bookequalizer.git
+**Last Updated**: 2025-07-16
